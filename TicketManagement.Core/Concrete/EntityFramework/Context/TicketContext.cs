@@ -13,19 +13,13 @@ public class TicketContext : DbContext
     //OnConfiguring() method is used to select and configure the data source
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //Get the Connection String from appsettings.json file
-
-        //Step2: Load the Configuration File.
-        var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-
-        // Step3: Get the Section to Read from the Configuration File
-        var configSection = configBuilder.GetSection("ConnectionStrings");
-
-        // Step4: Get the Configuration Values based on the Config key.
-        var connectionString = configSection["SQLServerConnection"] ?? null;
-
-        //Configuring the Connection String
-        optionsBuilder.UseSqlServer(connectionString);
+        // Eðer optionsBuilder henüz bir veritabaný saðlayýcýsýyla yapýlandýrýlmamýþsa
+        if (!optionsBuilder.IsConfigured)
+        {
+            throw new InvalidOperationException("DbContext yapýlandýrýlmamýþ. Lütfen uygulamanýn baðlantý dizesi saðladýðýndan emin olun.");
+            //var defaultConnectionString = "Server=(localdb)\\mssqllocaldb;Database=MyDefaultDatabase;Trusted_Connection=True;";
+            //optionsBuilder.UseSqlServer(defaultConnectionString);
+        }
     }
 
     //OnModelCreating() method is used to configure the model using ModelBuilder Fluent API

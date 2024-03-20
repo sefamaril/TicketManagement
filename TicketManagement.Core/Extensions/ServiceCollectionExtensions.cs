@@ -9,6 +9,6 @@ public static class ServiceCollectionExtensions
 {
     public static void AddDataAccessModule(this IServiceCollection services, IConfiguration configurationContext)
     {
-        services.AddDbContext<TicketContext>(options => options.UseSqlServer(configurationContext["connectionString"]), ServiceLifetime.Singleton);
+        services.AddDbContext<TicketContext>(options => options.UseSqlServer(configurationContext.GetConnectionString("SQLServerConnection")), ServiceLifetime.Scoped);
     }
 }
